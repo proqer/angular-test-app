@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChartService } from 'src/app/services/chart.service';
 
 @Component({
   selector: 'app-line-chart',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LineChartComponent implements OnInit {
 
-  constructor() { }
+  public get selectedField(): string {
+    return this.chartService.selectedField;
+  }
+
+  constructor(private chartService: ChartService) { }
 
   ngOnInit(): void {
   }

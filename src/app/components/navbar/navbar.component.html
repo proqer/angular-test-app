@@ -2,3 +2,20 @@
     <a mat-button routerLink="/pie">Pie chart</a>
     <a mat-button routerLink="/line">Line chart</a>
 </mat-toolbar>
+
+<div class="tool-group">
+
+    <mat-form-field>
+        <mat-label>Select field</mat-label>
+        <mat-select [(value)]="selected">
+            <mat-option value="markdown">Markdown</mat-option>
+            <mat-option value="revenues">Revenues</mat-option>
+            <mat-option value="margin">Margin</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <input type="file" (change)="onFileChange($event.srcElement.files)" accept=".csv">
+    
+    <button mat-raised-button color="warn" (click)="resetAll()">Reset all</button>
+
+</div>
