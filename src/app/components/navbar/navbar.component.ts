@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 
 import { ChartService } from 'src/app/services/chart.service';
+import { Record } from 'src/app/shared/record';
+import { Observable } from 'rxjs';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-navbar',
@@ -11,9 +14,7 @@ import { ChartService } from 'src/app/services/chart.service';
 })
 export class NavbarComponent implements OnInit {
 
-  public set selected(selectedValue: string) {
-    this.chartService.selectedField = selectedValue;
-  }
+  public selected$: Observable<string>;
 
   constructor(
     private ngxCsvParser: NgxCsvParser,
@@ -21,15 +22,20 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selected$ = this.chartService.selectedField$;
   }
 
-  onFileChange(files: File[]): void {
+  onFieldChange(changeEvent: MatSelectChange) {
+    this.chartService.selectField(changeEvent.value);
+  }
+
+  onFileChange(files: File[]) {
     this.ngxCsvParser
       .parse(files[0], {})
       .pipe()
       .subscribe(
-        (result: Array<any>) => {
-          this.chartService.records = result;
+        (result: Record[]) => {
+          this.chartService.setRecords(result);
         },
         (error: NgxCSVParserError) => {
           // TODO error handling

@@ -7,7 +7,7 @@
 
     <mat-form-field>
         <mat-label>Select field</mat-label>
-        <mat-select [(value)]="selected">
+        <mat-select [value]="selected$ | async" (selectionChange)="onFieldChange($event)">
             <mat-option value="markdown">Markdown</mat-option>
             <mat-option value="revenues">Revenues</mat-option>
             <mat-option value="margin">Margin</mat-option>
