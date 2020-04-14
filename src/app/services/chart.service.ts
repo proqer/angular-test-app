@@ -23,6 +23,4 @@ export class ChartService {
     this.recordsSubject.next(records);
   }
 
-
-
 }

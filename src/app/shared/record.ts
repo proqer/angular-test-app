@@ -1,13 +1,13 @@
 export interface Record {
-    itemCode: string;
-    categoryDesc: string;
+    item_code: string;
+    category_desc: string;
     channel: string;
     country: string;
     division: string;
     dm: string;
-    execId: string;
-    itemBrand: string;
-    itemCategory: string;
+    exec_id: string;
+    item_brand: string;
+    item_category: string;
     margin: string;
     markdown: string;
     price: string;
@@ -18,6 +18,6 @@ export interface Record {
     stock: string;
     store: string;
     valuta: string;
-    weekRef: string;
-    yearRef: string;
+    week_ref: string;
+    year_ref: string;
 }
