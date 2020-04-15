@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ChartService } from 'src/app/services/chart.service';
 import { Observable } from 'rxjs';
+import { LineChart } from 'dc';
+import * as dc from 'dc';
 
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss']
 })
-export class LineChartComponent implements OnInit {
+export class LineChartComponent implements AfterViewInit {
 
-  selectedField$: Observable<string>;
+  @ViewChild('graphContainer')
+  private graphContainer: ElementRef;
+  private lineChart: LineChart;
 
   constructor(private chartService: ChartService) { }
 
-  ngOnInit(): void {
-    this.selectedField$ = this.chartService.selectedField$;
+  ngAfterViewInit(): void {
+    this.lineChart = dc.lineChart(this.graphContainer.nativeElement);
+    this.chartService.initLineChart(this.lineChart);
   }
 
 }
