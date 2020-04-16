@@ -8,16 +8,16 @@ export interface Record {
     exec_id: string;
     item_brand: string;
     item_category: string;
-    margin: string;
-    markdown: string;
+    margin: number;
+    markdown: number;
     price: string;
     quantity: string;
     region: string;
-    revenues: string;
+    revenues: number;
     season: string;
     stock: string;
     store: string;
     valuta: string;
-    week_ref: string;
+    week_ref: number;
     year_ref: string;
 }

@@ -14,7 +14,7 @@ import { MatSelectChange } from '@angular/material/select';
 })
 export class NavbarComponent implements OnInit {
 
-  public selected$: Observable<string>;
+  selected$: Observable<string>;
 
   constructor(
     private ngxCsvParser: NgxCsvParser,
