@@ -1,9 +1,10 @@
 import { ChartService } from 'src/app/services/chart.service';
 
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import * as dc from 'dc';
 import { PieChart } from 'dc';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,7 +12,9 @@ import { PieChart } from 'dc';
   templateUrl: './pie-chart.component.html',
   styleUrls: ['./pie-chart.component.scss']
 })
-export class PieChartComponent implements AfterViewInit {
+export class PieChartComponent implements AfterViewInit, OnDestroy {
+
+  private subscriptions: Subscription = new Subscription();
 
   @ViewChild('graphContainer')
   private graphContainer: ElementRef;
@@ -26,9 +29,14 @@ export class PieChartComponent implements AfterViewInit {
     this.subscribeOnSelectedFieldChanges();
   }
 
+  ngOnDestroy(): void {
+    this.chartService.selectedSegments = this.pieChart.filters();
+    this.subscriptions.unsubscribe();
+  }
+
   private initPieChart() {
     this.pieChart = dc.pieChart(this.graphContainer.nativeElement);
-    const dimension = this.chartService.cf.dimension((record) => record.item_category);
+    const dimension = this.chartService.pieChartDimenstion;
     const group = dimension.group().reduceSum((record) => record.markdown);
     this.pieChart
       .width(768)
@@ -37,27 +45,35 @@ export class PieChartComponent implements AfterViewInit {
       .group(group)
       .legend(dc.legend())
       .render();
+    // Select previous
+    console.time('a');
+    this.pieChart.onClick({ key: 'CC' });
+    // this.chartService.selectedSegments
+    //   .map((current) => ({ key: current }))
+    //   .forEach((current) => this.pieChart.onClick(current));
+    console.timeEnd('a');
+    // this.pieChart.filter(this.chartService.selectedSegments);
   }
 
   showFilters() {
-    console.log(this.pieChart.filters());
-    this.pieChart.filter(['HH', 'FF']); // TODO
-    this.pieChart.redraw();
+
   }
 
-  private subscribeOnRecorChanges() {
-    this.chartService.selectedField$.subscribe((fieldValue) => {
+  private subscribeOnSelectedFieldChanges() {
+    const selectFieldSubscription = this.chartService.selectedField$.subscribe((fieldValue) => {
       this.pieChart
         .group()
         .reduceSum((record) => record[fieldValue]);
       this.pieChart.redraw();
     });
+    this.subscriptions.add(selectFieldSubscription);
   }
 
-  private subscribeOnSelectedFieldChanges() {
-    this.chartService.records$.subscribe(() => {
+  private subscribeOnRecorChanges() {
+    const recordsSubscription = this.chartService.records$.subscribe(() => {
       this.pieChart.redraw();
     });
+    this.subscriptions.add(recordsSubscription);
   }
 
 }

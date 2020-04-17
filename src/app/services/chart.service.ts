@@ -11,6 +11,10 @@ import { Crossfilter } from 'crossfilter2';
 export class ChartService {
 
   readonly cf: Crossfilter<Record> = crossfilter();
+  readonly pieChartDimenstion = this.cf.dimension((record) => record.item_category);
+  readonly lineChartDimenstion = this.cf.dimension((record) => record.week_ref);
+
+  selectedSegments: any[] = [];
 
   private recordsSubject: BehaviorSubject<Record[]> = new BehaviorSubject([]);
   private selectedFieldSubject: BehaviorSubject<string> = new BehaviorSubject('markdown');
@@ -32,6 +36,7 @@ export class ChartService {
 
   private subscribeOnRecordsChange() {
     this.records$.subscribe((records) => {
+      this.selectedSegments = [];
       this.cf.remove();
       this.cf.add(records);
     });
