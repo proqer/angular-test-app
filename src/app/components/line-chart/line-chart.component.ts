@@ -31,16 +31,24 @@ export class LineChartComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     // this.chartService.selectedSegments = this.pieChart.filters();
     this.subscriptions.unsubscribe();
+    dc.deregisterChart(this.lineChart);
+  }
+
+  showFilters() {
+    console.log(this.lineChart.rangeChart());
+    console.log(this.lineChart.filters());
+    console.log(this.lineChart.xUnitCount());
+    console.log(this.lineChart.xUnits());
   }
 
   private initLineChart() {
     this.lineChart = dc.lineChart(this.graphContainer.nativeElement);
     const dimension = this.chartService.lineChartDimenstion;
-    const group = dimension.group().reduceSum((record) => record.markdown);
+    const group = this.chartService.lineChartGroup;
     this.lineChart
       .width(1000)
       .height(400)
-      .margins({ top: 10, right: 10, bottom: 20, left: 40 })
+      .margins({ top: 10, right: 10, bottom: 50, left: 80 })
       .transitionDuration(500)
       .dimension(dimension)
       .group(group)

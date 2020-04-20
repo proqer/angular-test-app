@@ -32,12 +32,13 @@ export class PieChartComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.chartService.selectedSegments = this.pieChart.filters();
     this.subscriptions.unsubscribe();
+    dc.deregisterChart(this.pieChart);
   }
 
   private initPieChart() {
     this.pieChart = dc.pieChart(this.graphContainer.nativeElement);
     const dimension = this.chartService.pieChartDimenstion;
-    const group = dimension.group().reduceSum((record) => record.markdown);
+    const group = this.chartService.pieChartGroup;
     this.pieChart
       .width(768)
       .height(480)
@@ -46,17 +47,9 @@ export class PieChartComponent implements AfterViewInit, OnDestroy {
       .legend(dc.legend())
       .render();
     // Select previous
-    console.time('a');
-    this.pieChart.onClick({ key: 'CC' });
-    // this.chartService.selectedSegments
-    //   .map((current) => ({ key: current }))
-    //   .forEach((current) => this.pieChart.onClick(current));
-    console.timeEnd('a');
-    // this.pieChart.filter(this.chartService.selectedSegments);
-  }
-
-  showFilters() {
-
+    this.chartService.selectedSegments
+      .map((current) => ({ key: current }))
+      .forEach((current) => this.pieChart.onClick(current));
   }
 
   private subscribeOnSelectedFieldChanges() {

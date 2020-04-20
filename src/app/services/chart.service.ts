@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, from } from 'rxjs';
 
 import * as crossfilter from 'crossfilter2';
 import { Crossfilter } from 'crossfilter2';
+import * as dc from 'dc';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class ChartService {
 
   readonly cf: Crossfilter<Record> = crossfilter();
   readonly pieChartDimenstion = this.cf.dimension((record) => record.item_category);
+  readonly pieChartGroup = this.pieChartDimenstion.group().reduceSum((record) => record.markdown);
   readonly lineChartDimenstion = this.cf.dimension((record) => record.week_ref);
+  readonly lineChartGroup = this.lineChartDimenstion.group().reduceSum((record) => record.markdown);
 
   selectedSegments: any[] = [];
 
@@ -32,6 +35,14 @@ export class ChartService {
 
   setRecords(records: Record[]): void {
     this.recordsSubject.next(records);
+  }
+
+  clearCharts() {
+    this.pieChartDimenstion.filterAll();
+    this.lineChartDimenstion.filterAll();
+    this.selectedSegments = [];
+    dc.filterAll();
+    dc.redrawAll();
   }
 
   private subscribeOnRecordsChange() {

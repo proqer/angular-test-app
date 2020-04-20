@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 
@@ -44,7 +44,7 @@ export class NavbarComponent implements OnInit {
   }
 
   resetAll() {
-    // TODO
+    this.chartService.clearCharts();
   }
 
 }
