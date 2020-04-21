@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
 import { Record } from '../shared/record';
+
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 
 import * as crossfilter from 'crossfilter2';
@@ -18,6 +19,7 @@ export class ChartService {
   readonly lineChartGroup = this.lineChartDimenstion.group().reduceSum((record) => record.markdown);
 
   selectedSegments: any[] = [];
+  selectedRange: any;
 
   private recordsSubject: BehaviorSubject<Record[]> = new BehaviorSubject([]);
   private selectedFieldSubject: BehaviorSubject<string> = new BehaviorSubject('markdown');
@@ -41,6 +43,7 @@ export class ChartService {
     this.pieChartDimenstion.filterAll();
     this.lineChartDimenstion.filterAll();
     this.selectedSegments = [];
+    this.selectedRange = null;
     dc.filterAll();
     dc.redrawAll();
   }
@@ -48,6 +51,7 @@ export class ChartService {
   private subscribeOnRecordsChange() {
     this.records$.subscribe((records) => {
       this.selectedSegments = [];
+      this.selectedRange = null;
       this.cf.remove();
       this.cf.add(records);
     });

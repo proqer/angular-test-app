@@ -1,11 +1,11 @@
 import { ChartService } from 'src/app/services/chart.service';
 
 import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { LineChart } from 'dc';
 import * as dc from 'dc';
 import * as d3 from 'd3';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-line-chart',
@@ -29,21 +29,15 @@ export class LineChartComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.chartService.selectedSegments = this.pieChart.filters();
+    this.chartService.selectedRange = this.lineChart.filter();
     this.subscriptions.unsubscribe();
     dc.deregisterChart(this.lineChart);
-  }
-
-  showFilters() {
-    console.log(this.lineChart.rangeChart());
-    console.log(this.lineChart.filters());
-    console.log(this.lineChart.xUnitCount());
-    console.log(this.lineChart.xUnits());
   }
 
   private initLineChart() {
     this.lineChart = dc.lineChart(this.graphContainer.nativeElement);
     const dimension = this.chartService.lineChartDimenstion;
+
     const group = this.chartService.lineChartGroup;
     this.lineChart
       .width(1000)
@@ -53,8 +47,11 @@ export class LineChartComponent implements AfterViewInit, OnDestroy {
       .dimension(dimension)
       .group(group)
       .elasticY(true)
-      .x(d3.scaleTime().domain([27, 38])) // TODO
-      .render();
+      .x(d3.scaleTime().domain([26, 39])) // TODO
+      .xAxis().tickFormat(d3.timeFormat('%W'));
+    this.lineChart.render();
+    // Select previous
+    this.lineChart.filter(this.chartService.selectedRange);
   }
 
   private subscribeOnSelectedFieldChanges() {

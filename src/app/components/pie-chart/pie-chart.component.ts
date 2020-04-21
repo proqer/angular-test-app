@@ -1,10 +1,10 @@
 import { ChartService } from 'src/app/services/chart.service';
 
 import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import * as dc from 'dc';
 import { PieChart } from 'dc';
-import { Subscription } from 'rxjs';
 
 
 @Component({

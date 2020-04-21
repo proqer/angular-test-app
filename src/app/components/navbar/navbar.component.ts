@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
-import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
-
 import { ChartService } from 'src/app/services/chart.service';
 import { Record } from 'src/app/shared/record';
-import { Observable } from 'rxjs';
+
+import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+import { Observable } from 'rxjs';
+import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 
 @Component({
   selector: 'app-navbar',
@@ -34,9 +33,7 @@ export class NavbarComponent implements OnInit {
       .parse(files[0], {})
       .pipe()
       .subscribe(
-        (result: Record[]) => {
-          this.chartService.setRecords(result);
-        },
+        (records: Record[]) => this.chartService.setRecords(records),
         (error: NgxCSVParserError) => {
           // TODO error handling
           console.log('Error', error);
