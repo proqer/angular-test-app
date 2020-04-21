@@ -19,5 +19,5 @@ export interface Record {
     store: string;
     valuta: string;
     week_ref: number;
-    year_ref: string;
+    date: Date;
 }

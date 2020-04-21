@@ -47,9 +47,10 @@ export class LineChartComponent implements AfterViewInit, OnDestroy {
       .dimension(dimension)
       .group(group)
       .elasticY(true)
-      .x(d3.scaleTime().domain([26, 39])) // TODO
-      .xAxis().tickFormat(d3.timeFormat('%W'));
-    this.lineChart.render();
+      .x(d3.scaleTime())
+      .elasticX(true)
+      .xUnits(d3.timeWeeks)
+      .render();
     // Select previous
     this.lineChart.filter(this.chartService.selectedRange);
   }

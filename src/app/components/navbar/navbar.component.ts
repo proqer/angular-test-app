@@ -1,5 +1,4 @@
 import { ChartService } from 'src/app/services/chart.service';
-import { Record } from 'src/app/shared/record';
 
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
@@ -17,7 +16,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private ngxCsvParser: NgxCsvParser,
-    private chartService: ChartService) {
+    public chartService: ChartService) {
   }
 
   ngOnInit(): void {
@@ -33,7 +32,14 @@ export class NavbarComponent implements OnInit {
       .parse(files[0], {})
       .pipe()
       .subscribe(
-        (records: Record[]) => this.chartService.setRecords(records),
+        (records: any[]) => {
+          records.forEach(record => {
+            record.date = new Date(+record.year_ref, 0, +record.week_ref * 7 - 7);
+            delete record.year_ref;
+            delete record.week_ref;
+          });
+          this.chartService.setRecords(records);
+        },
         (error: NgxCSVParserError) => {
           // TODO error handling
           console.log('Error', error);
