@@ -1,7 +1,6 @@
 import { ChartService } from 'src/app/services/chart.service';
 
 import { Component, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
 import { Observable } from 'rxjs';
 import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 
@@ -23,31 +22,40 @@ export class NavbarComponent implements OnInit {
     this.selected$ = this.chartService.selectedField$;
   }
 
-  onFieldChange(changeEvent: MatSelectChange) {
-    this.chartService.selectField(changeEvent.value);
+  /**
+   * Select field value
+   *
+   * @param fieldName value of selection
+   */
+  onFieldChange(fieldName: string) {
+    this.chartService.selectField(fieldName);
   }
 
-  onFileChange(files: File[]) {
+  /**
+   * Parse file and save data for charts
+   *
+   * @param file to be parsed and saved.
+   */
+  onFileChange(file: File) {
     this.ngxCsvParser
-      .parse(files[0], {})
-      .pipe()
+      .parse(file, {})
       .subscribe(
         (records: any[]) => {
+          console.log(records);
           records.forEach(record => {
             record.date = new Date(+record.year_ref, 0, +record.week_ref * 7 - 7);
             delete record.year_ref;
             delete record.week_ref;
           });
           this.chartService.setRecords(records);
-        },
-        (error: NgxCSVParserError) => {
-          // TODO error handling
-          console.log('Error', error);
         });
   }
 
+  /**
+   * Clear filters for all charts
+   */
   resetAll() {
-    this.chartService.clearCharts();
+    this.chartService.clearChartsFilters();
   }
 
 }

@@ -35,6 +35,9 @@ export class PieChartComponent implements AfterViewInit, OnDestroy {
     dc.deregisterChart(this.pieChart);
   }
 
+  /**
+   * Initialize pieChart with dimension and group from chartService
+   */
   private initPieChart() {
     this.pieChart = dc.pieChart(this.graphContainer.nativeElement);
     const dimension = this.chartService.pieChartDimenstion;
@@ -52,6 +55,9 @@ export class PieChartComponent implements AfterViewInit, OnDestroy {
       .forEach((current) => this.pieChart.onClick(current));
   }
 
+  /**
+   * Change grouping on pieChart on selected field changing.
+   */
   private subscribeOnSelectedFieldChanges() {
     const selectFieldSubscription = this.chartService.selectedField$.subscribe((fieldValue) => {
       this.pieChart
@@ -62,6 +68,9 @@ export class PieChartComponent implements AfterViewInit, OnDestroy {
     this.subscriptions.add(selectFieldSubscription);
   }
 
+  /**
+   * Redraw pieChart on record change
+   */
   private subscribeOnRecorChanges() {
     const recordsSubscription = this.chartService.records$.subscribe(() => {
       this.pieChart.redraw();

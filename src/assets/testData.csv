@@ -1,0 +1,2 @@
+Item_code,item_category,year_ref,week_ref,markdown,revenues,margin,price,quantity,stock,exec_id,item_brand,category_desc,valuta,season,store,dm,region,channel,country,division
+string,string,2015,1,1,1,1,string,string,string,string,string,string,string,string,string,string,string,string,string,string

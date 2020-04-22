@@ -32,15 +32,28 @@ export class ChartService {
     this.subscribeOnRecordsChange();
   }
 
+  /**
+   * Emmit new selected value
+   *
+   * @param fieldValue to be selected
+   */
   selectField(fieldValue: string): void {
     this.selectedFieldSubject.next(fieldValue);
   }
 
+  /**
+   * Emmit new records
+   *
+   * @param records to be set
+   */
   setRecords(records: Record[]): void {
     this.recordsSubject.next(records);
   }
 
-  clearCharts() {
+  /**
+   * Clear filters on all charts
+   */
+  clearChartsFilters() {
     this.pieChartDimenstion.filterAll();
     this.lineChartDimenstion.filterAll();
     this.selectedSegments = [];
@@ -49,10 +62,13 @@ export class ChartService {
     dc.redrawAll();
   }
 
+  /**
+   * Subscribe on changing records. Clear current data and set new.
+   * Remove current selected filters
+   */
   private subscribeOnRecordsChange() {
     this.records$.subscribe((records) => {
-      this.selectedSegments = [];
-      this.selectedRange = null;
+      this.clearChartsFilters();
       this.cf.remove();
       this.cf.add(records);
     });
