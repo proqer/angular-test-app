@@ -1,7 +1,7 @@
 import { Record } from '../shared/record';
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import * as crossfilter from 'crossfilter2';
 import { Crossfilter } from 'crossfilter2';

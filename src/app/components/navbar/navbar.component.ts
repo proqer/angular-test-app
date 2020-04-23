@@ -2,7 +2,7 @@ import { ChartService } from 'src/app/services/chart.service';
 
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
+import { NgxCsvParser } from 'ngx-csv-parser';
 
 @Component({
   selector: 'app-navbar',
