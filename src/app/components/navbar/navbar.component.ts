@@ -27,7 +27,7 @@ export class NavbarComponent implements OnInit {
    *
    * @param fieldName value of selection
    */
-  onFieldChange(fieldName: string) {
+  changeSelectedField(fieldName: string) {
     this.chartService.selectField(fieldName);
   }
 
@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
    *
    * @param file to be parsed and saved.
    */
-  onFileChange(file: File) {
+  parseFile(file: File) {
     this.ngxCsvParser
       .parse(file, {})
       .subscribe(
